@@ -9,8 +9,8 @@ const keycloak = new Keycloak({
 export function initKeycloak() {
     return keycloak.init({
         onLoad: 'login-required',
-        pkceMethod: 'S256',
-        checkLoginIframe: false
+        checkLoginIframe: false,
+        enableLogging: true
     })
 }
 
