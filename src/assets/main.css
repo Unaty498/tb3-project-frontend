@@ -1,35 +1,167 @@
-@import './base.css';
+@import "./base.css";
 
 #app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    min-height: 100vh;
     display: flex;
-    place-items: center;
-  }
+    flex-direction: column;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+a {
+    text-decoration: none;
+    color: #007bff;
+    transition: 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Global Dashboard Styles */
+h1,
+h2,
+h3 {
+    color: var(--color-heading);
+    margin-bottom: 1rem;
+}
+
+button {
+    cursor: pointer;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    margin-right: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button.secondary {
+    background-color: #6c757d;
+}
+
+button.secondary:hover {
+    background-color: #5a6268;
+}
+
+button.danger {
+    background-color: #dc3545;
+}
+
+button.danger:hover {
+    background-color: #c82333;
+}
+
+button.success {
+    background-color: #28a745;
+}
+
+button.success:hover {
+    background-color: #218838;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: var(--color-background);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+}
+
+th {
+    background-color: var(--color-background-soft);
+    font-weight: 600;
+    color: var(--color-heading);
+}
+
+tr:hover {
+    background-color: var(--color-background-mute);
+}
+
+/* Cards */
+.card {
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+/* Forms */
+input,
+select,
+textarea {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Utility */
+.flex-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+}
+
+.badge.active {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.badge.inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.clickable-row {
+    cursor: pointer;
 }
