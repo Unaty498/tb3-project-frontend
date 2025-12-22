@@ -7,6 +7,7 @@ import DoorsView from "../views/DoorsView.vue";
 import DoorDetailView from "../views/DoorDetailView.vue";
 import AccessRulesView from "../views/AccessRulesView.vue";
 import AccessLogsView from "../views/AccessLogsView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -48,6 +49,11 @@ const router = createRouter({
                     component: AccessLogsView,
                 },
             ],
+        },
+        {
+            path: "/:pathMatch(.*)*",
+            name: "not-found",
+            component: NotFoundView,
         },
     ],
 });
