@@ -111,11 +111,13 @@ import accessLogService, { type AccessLog } from "../services/accessLogService";
 import StatusBadge from "../components/StatusBadge.vue";
 import ModalDialog from "../components/ModalDialog.vue";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const route = useRoute();
 const doorId = String(route.params.id);
 
 const { fetchUsers, getUserName, getUserEmail } = useLookups();
+const { addToast } = useToast();
 
 const door = ref<Door | null>(null);
 const accessRules = ref<AccessRule[]>([]);
@@ -144,7 +146,7 @@ const fetchData = async () => {
 
         editingDoor.value = { ...door.value };
     } catch (error) {
-        console.error("Error fetching door details:", error);
+        addToast("Error fetching door details", "error");
     }
 };
 
@@ -157,8 +159,9 @@ const toggleActive = async () => {
             await doorService.activateDoor(door.value.id);
         }
         await fetchData();
+        addToast("Door status updated", "success");
     } catch (error) {
-        console.error("Error toggling door status:", error);
+        addToast("Error toggling door status", "error");
     }
 };
 
@@ -168,8 +171,9 @@ const updateDoor = async () => {
         await doorService.updateDoor(door.value.id, editingDoor.value);
         showEditModal.value = false;
         await fetchData();
+        addToast("Door updated successfully", "success");
     } catch (error) {
-        console.error("Error updating door:", error);
+        addToast("Error updating door", "error");
     }
 };
 

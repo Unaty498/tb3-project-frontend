@@ -149,8 +149,10 @@ import accessRuleService, { type AccessRule } from "../services/accessRuleServic
 import StatusBadge from "../components/StatusBadge.vue";
 import ModalDialog from "../components/ModalDialog.vue";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const { users, doors, fetchUsers, fetchDoors, getUserName, getDoorName } = useLookups();
+const { addToast } = useToast();
 
 const rules = ref<AccessRule[]>([]);
 const showCreateModal = ref(false);
@@ -175,7 +177,7 @@ const fetchRules = async () => {
         const response = await accessRuleService.getAccessRules();
         rules.value = response.data;
     } catch (error) {
-        console.error("Error fetching access rules:", error);
+        addToast("Error fetching access rules", "error");
     }
 };
 
@@ -188,8 +190,9 @@ const toggleActive = async (rule: AccessRule) => {
             await accessRuleService.activateAccessRule(rule.id);
         }
         await fetchRules();
+        addToast("Access rule status updated", "success");
     } catch (error) {
-        console.error("Error toggling access rule status:", error);
+        addToast("Error toggling access rule status", "error");
     }
 };
 
@@ -198,8 +201,9 @@ const deleteRule = async (id: string) => {
     try {
         await accessRuleService.deleteAccessRule(id);
         await fetchRules();
+        addToast("Access rule deleted successfully", "success");
     } catch (error) {
-        console.error("Error deleting access rule:", error);
+        addToast("Error deleting access rule", "error");
     }
 };
 
@@ -220,8 +224,9 @@ const createRule = async () => {
         showCreateModal.value = false;
         newRule.value = { userId: "", doorId: "", timeSlots: [], active: true };
         await fetchRules();
+        addToast("Access rule created successfully", "success");
     } catch (error) {
-        console.error("Error creating access rule:", error);
+        addToast("Error creating access rule", "error");
     }
 };
 
@@ -237,8 +242,9 @@ const updateRule = async () => {
         await accessRuleService.updateAccessRule(editingRule.value.id, editingRule.value);
         showEditModal.value = false;
         await fetchRules();
+        addToast("Access rule updated successfully", "success");
     } catch (error) {
-        console.error("Error updating access rule:", error);
+        addToast("Error updating access rule", "error");
     }
 };
 

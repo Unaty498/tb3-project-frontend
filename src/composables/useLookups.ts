@@ -2,18 +2,20 @@ import { ref } from "vue";
 import userService, { type User } from "../services/userService";
 import doorService, { type Door } from "../services/doorService";
 import badgeService, { type Badge } from "../services/badgeService";
+import { useToast } from "./useToast";
 
 export function useLookups() {
     const users = ref<User[]>([]);
     const doors = ref<Door[]>([]);
     const badges = ref<Badge[]>([]);
+    const { addToast } = useToast();
 
     const fetchUsers = async () => {
         try {
             const response = await userService.getUsers();
             users.value = response.data;
         } catch (error) {
-            console.error("Error fetching users:", error);
+            addToast("Error fetching users", "error");
         }
     };
 
@@ -22,7 +24,7 @@ export function useLookups() {
             const response = await doorService.getDoors();
             doors.value = response.data;
         } catch (error) {
-            console.error("Error fetching doors:", error);
+            addToast("Error fetching doors", "error");
         }
     };
 
@@ -31,7 +33,7 @@ export function useLookups() {
             const response = await badgeService.getBadges();
             badges.value = response.data;
         } catch (error) {
-            console.error("Error fetching badges:", error);
+            addToast("Error fetching badges", "error");
         }
     };
 

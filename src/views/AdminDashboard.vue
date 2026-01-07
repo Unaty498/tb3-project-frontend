@@ -7,6 +7,7 @@
             <router-link to="/admin/doors">Doors</router-link>
             <router-link to="/admin/access-rules">Access Rules</router-link>
             <router-link to="/admin/access-logs">Access Logs</router-link>
+            <button class="keycloak-btn" @click="handleKeycloak">Gestion Keycloak</button>
             <button class="logout-btn" @click="handleLogout">Déconnexion</button>
         </nav>
         <div class="admin-content">
@@ -20,6 +21,12 @@ import { logout } from '../services/keycloak';
 
 function handleLogout() {
   logout();
+}
+
+function handleKeycloak() {
+    const keycloakUrl = import.meta.env.VITE_KEYCLOAK_URL || (window.location.origin + '/keycloak');
+    const adminUrl = `${keycloakUrl}/admin/master/console/#/realms/connected-lock/users`;
+    window.open(adminUrl, '_blank');
 }
 </script>
 

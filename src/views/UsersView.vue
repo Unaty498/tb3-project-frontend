@@ -103,8 +103,10 @@ import accessRuleService, { type AccessRule } from "../services/accessRuleServic
 import StatusBadge from "../components/StatusBadge.vue";
 import ModalDialog from "../components/ModalDialog.vue";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const { users, fetchUsers, fetchDoors, getDoorName } = useLookups();
+const { addToast } = useToast();
 
 const showCreateModal = ref(false);
 const showEditModal = ref(false);
@@ -138,8 +140,9 @@ const toggleActive = async (user: User) => {
             await userService.activateUser(user.id);
         }
         await fetchUsers();
+        addToast("User status updated", "success");
     } catch (error) {
-        console.error("Error toggling user status:", error);
+        addToast("Error toggling user status", "error");
     }
 };
 
@@ -148,8 +151,9 @@ const deleteUser = async (id: string) => {
     try {
         await userService.deleteUser(id);
         await fetchUsers();
+        addToast("User deleted successfully", "success");
     } catch (error) {
-        console.error("Error deleting user:", error);
+        addToast("Error deleting user", "error");
     }
 };
 
@@ -159,8 +163,9 @@ const createUser = async () => {
         showCreateModal.value = false;
         newUser.value = { email: "", firstName: "", lastName: "", role: "USER", active: true };
         await fetchUsers();
+        addToast("User created successfully", "success");
     } catch (error) {
-        console.error("Error creating user:", error);
+        addToast("Error creating user", "error");
     }
 };
 
@@ -175,8 +180,9 @@ const updateUser = async () => {
         await userService.updateUser(editingUser.value.id, editingUser.value);
         showEditModal.value = false;
         await fetchUsers();
+        addToast("User updated successfully", "success");
     } catch (error) {
-        console.error("Error updating user:", error);
+        addToast("Error updating user", "error");
     }
 };
 
@@ -188,7 +194,7 @@ const viewDoors = async (user: User) => {
         userRules.value = response.data;
         showDoorsModal.value = true;
     } catch (error) {
-        console.error("Error fetching user rules:", error);
+        addToast("Error fetching user rules", "error");
     }
 };
 

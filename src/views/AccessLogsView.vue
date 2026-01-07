@@ -56,8 +56,10 @@
 import { ref, onMounted } from "vue";
 import accessLogService, { type AccessLog } from "../services/accessLogService";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const { fetchAllLookups, getUserName, getDoorName, getBadgeNumber } = useLookups();
+const { addToast } = useToast();
 
 const logs = ref<AccessLog[]>([]);
 const startDate = ref("");
@@ -68,7 +70,7 @@ const fetchLogs = async () => {
         const response = await accessLogService.getAccessLogs();
         logs.value = response.data;
     } catch (error) {
-        console.error("Error fetching access logs:", error);
+        addToast("Error fetching access logs", "error");
     }
 };
 
@@ -81,7 +83,7 @@ const fetchLogsByDate = async () => {
         );
         logs.value = response.data;
     } catch (error) {
-        console.error("Error fetching access logs by date:", error);
+        addToast("Error fetching access logs by date", "error");
     }
 };
 

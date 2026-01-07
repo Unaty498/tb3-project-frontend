@@ -84,8 +84,10 @@ import accessRuleService, { type AccessRule } from "../services/accessRuleServic
 import StatusBadge from "../components/StatusBadge.vue";
 import ModalDialog from "../components/ModalDialog.vue";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const { doors, fetchDoors, fetchUsers, getUserName } = useLookups();
+const { addToast } = useToast();
 
 const showCreateModal = ref(false);
 const showEditModal = ref(false);
@@ -115,8 +117,9 @@ const toggleActive = async (door: Door) => {
             await doorService.activateDoor(door.id);
         }
         await fetchDoors();
+        addToast("Door status updated", "success");
     } catch (error) {
-        console.error("Error toggling door status:", error);
+        addToast("Error toggling door status", "error");
     }
 };
 
@@ -125,8 +128,9 @@ const deleteDoor = async (id: string) => {
     try {
         await doorService.deleteDoor(id);
         await fetchDoors();
+        addToast("Door deleted successfully", "success");
     } catch (error) {
-        console.error("Error deleting door:", error);
+        addToast("Error deleting door", "error");
     }
 };
 
@@ -136,8 +140,9 @@ const createDoor = async () => {
         showCreateModal.value = false;
         newDoor.value = { deviceId: "", location: "", active: true };
         await fetchDoors();
+        addToast("Door created successfully", "success");
     } catch (error) {
-        console.error("Error creating door:", error);
+        addToast("Error creating door", "error");
     }
 };
 
@@ -152,8 +157,9 @@ const updateDoor = async () => {
         await doorService.updateDoor(editingDoor.value.id, editingDoor.value);
         showEditModal.value = false;
         await fetchDoors();
+        addToast("Door updated successfully", "success");
     } catch (error) {
-        console.error("Error updating door:", error);
+        addToast("Error updating door", "error");
     }
 };
 
@@ -165,7 +171,7 @@ const viewUsers = async (door: Door) => {
         doorRules.value = response.data;
         showUsersModal.value = true;
     } catch (error) {
-        console.error("Error fetching door rules:", error);
+        addToast("Error fetching door rules", "error");
     }
 };
 

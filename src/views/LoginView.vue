@@ -24,12 +24,14 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { login, hasRole, logout, getToken } from '../services/keycloak';
+import { useToast } from '../composables/useToast';
 
 const username = ref('');
 const password = ref('');
 const error = ref('');
 const loading = ref(false);
 const router = useRouter();
+const { addToast } = useToast();
 
 async function handleLogin() {
   loading.value = true;
@@ -45,19 +47,18 @@ async function handleLogin() {
               }
             });
           } catch (syncError) {
-            console.error("Failed to sync user with backend", syncError);
+            addToast("Failed to sync user with backend", "warning");
           }
           router.push('/');
       } else {
           error.value = "Vous n'avez pas les droits d'administration";
-          logout();
       }
     } else {
       error.value = 'Identifiants incorrects';
     }
   } catch (e) {
     error.value = 'Erreur de connexion';
-    console.error(e);
+    addToast("Erreur de connexion", "error");
   } finally {
     loading.value = false;
   }

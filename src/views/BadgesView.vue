@@ -87,8 +87,10 @@ import badgeService, { type Badge } from "../services/badgeService";
 import StatusBadge from "../components/StatusBadge.vue";
 import ModalDialog from "../components/ModalDialog.vue";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const { users, fetchUsers, getUserName } = useLookups();
+const { addToast } = useToast();
 
 const badges = ref<Badge[]>([]);
 const showCreateModal = ref(false);
@@ -115,7 +117,7 @@ const fetchBadges = async () => {
         const response = await badgeService.getBadges();
         badges.value = response.data;
     } catch (error) {
-        console.error("Error fetching badges:", error);
+        addToast("Error fetching badges", "error");
     }
 };
 
@@ -128,8 +130,9 @@ const toggleActive = async (badge: Badge) => {
             await badgeService.activateBadge(badge.id);
         }
         await fetchBadges();
+        addToast("Badge updated successfully", "success");
     } catch (error) {
-        console.error("Error toggling badge status:", error);
+        addToast("Error toggling badge status", "error");
     }
 };
 
@@ -138,8 +141,9 @@ const deleteBadge = async (id: string) => {
     try {
         await badgeService.deleteBadge(id);
         await fetchBadges();
+        addToast("Badge deleted successfully", "success");
     } catch (error) {
-        console.error("Error deleting badge:", error);
+        addToast("Error deleting badge", "error");
     }
 };
 
@@ -155,8 +159,9 @@ const createBadge = async () => {
             expiryDate: "",
         };
         await fetchBadges();
+        addToast("Badge created successfully", "success");
     } catch (error) {
-        console.error("Error creating badge:", error);
+        addToast("Error creating badge", "error");
     }
 };
 
@@ -168,14 +173,12 @@ const editBadge = (badge: Badge) => {
 const updateBadge = async () => {
     if (!editingBadge.value.id || !editingBadge.value.expiryDate) return;
     try {
-        // The backend only exposes updateExpiry for badges in the summary,
-        // but let's check if there is a full update.
-        // Looking at badgeService.ts, we have updateBadgeExpiry.
         await badgeService.updateBadgeExpiry(editingBadge.value.id, editingBadge.value.expiryDate);
         showEditModal.value = false;
+        addToast("Badge expiry updated", "success");
         await fetchBadges();
     } catch (error) {
-        console.error("Error updating badge:", error);
+        addToast("Error updating badge", "error");
     }
 };
 

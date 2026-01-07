@@ -144,11 +144,13 @@ import accessLogService, { type AccessLog } from "../services/accessLogService";
 import StatusBadge from "../components/StatusBadge.vue";
 import ModalDialog from "../components/ModalDialog.vue";
 import { useLookups } from "../composables/useLookups";
+import { useToast } from "../composables/useToast";
 
 const route = useRoute();
 const userId = String(route.params.id);
 
 const { fetchDoors, getDoorName } = useLookups();
+const { addToast } = useToast();
 
 const user = ref<User | null>(null);
 const badges = ref<Badge[]>([]);
@@ -180,7 +182,7 @@ const fetchData = async () => {
 
         editingUser.value = { ...user.value };
     } catch (error) {
-        console.error("Error fetching user details:", error);
+        addToast("Error fetching user details", "error");
     }
 };
 
@@ -193,8 +195,9 @@ const toggleActive = async () => {
             await userService.activateUser(user.value.id);
         }
         await fetchData();
+        addToast("User status updated", "success");
     } catch (error) {
-        console.error("Error toggling user status:", error);
+        addToast("Error toggling user status", "error");
     }
 };
 
@@ -204,8 +207,9 @@ const updateUser = async () => {
         await userService.updateUser(user.value.id, editingUser.value);
         showEditModal.value = false;
         await fetchData();
+        addToast("User updated successfully", "success");
     } catch (error) {
-        console.error("Error updating user:", error);
+        addToast("Error updating user", "error");
     }
 };
 
