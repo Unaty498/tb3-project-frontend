@@ -3,7 +3,7 @@ import "./assets/main.css";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { getToken, initKeycloak } from "./services/keycloak";
+import { initKeycloak } from "./services/keycloak";
 
 const app = createApp(App);
 

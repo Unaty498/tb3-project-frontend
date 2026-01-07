@@ -25,7 +25,6 @@ export async function login(username: string, password: string): Promise<boolean
     params.append('client_id', CLIENT_ID);
     params.append('username', username);
     params.append('password', password);
-    // params.append('scope', 'openid'); // Optional
 
     try {
         const response = await fetch(`${KEYCLOAK_URL}/realms/${REALM}/protocol/openid-connect/token`, {
@@ -62,18 +61,11 @@ export function getToken() {
 }
 
 export async function initKeycloak(): Promise<boolean> {
-    // Check if we have a token
     const token = getToken();
     if (!token) return false;
-
-    // Optional: Check token validity here or wait for 401
-    // Simple check: decode and check exp
     try {
         const payload = decodeJwt(token);
         if (payload.exp && payload.exp * 1000 < Date.now()) {
-            // Token expired, try refresh or logout
-            // For simplicity, logout for now, or implement refresh flow
-            // Implementing basic refresh:
             return await refreshToken();
         }
         return true;

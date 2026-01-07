@@ -8,8 +8,7 @@ const apiClient = axios.create({
     },
 });
 
-// Add a request interceptor to include the token if we implement auth later
-// For now, we'll assume we might need to handle auth headers here
+
 apiClient.interceptors.request.use(
     async (config) => {
         try {
