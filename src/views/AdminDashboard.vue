@@ -7,12 +7,21 @@
             <router-link to="/admin/doors">Doors</router-link>
             <router-link to="/admin/access-rules">Access Rules</router-link>
             <router-link to="/admin/access-logs">Access Logs</router-link>
+            <button class="logout-btn" @click="handleLogout">Déconnexion</button>
         </nav>
         <div class="admin-content">
             <router-view></router-view>
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { logout } from '../services/keycloak';
+
+function handleLogout() {
+  logout();
+}
+</script>
 
 <style scoped>
 .admin-dashboard {
@@ -36,5 +45,19 @@
 
 .admin-nav a.router-link-active {
     color: #007bff;
+}
+
+.logout-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.logout-btn:hover {
+    color: #a71d2a;
 }
 </style>

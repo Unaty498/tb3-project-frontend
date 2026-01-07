@@ -9,25 +9,7 @@ const app = createApp(App);
 
 app.use(router);
 
-initKeycloak()
-    .then(async (authenticated) => {
-        if (!authenticated) {
-            window.location.reload();
-        } else {
-            try {
-                // Appel au backend pour synchroniser l'utilisateur
-                await fetch('/api/me', {
-                    headers: {
-                        'Authorization': `Bearer ${getToken()}`
-                    }
-                });
-            } catch (error) {
-                console.error("Failed to synchronize user with backend", error);
-            }
-            console.log("Authenticated");
-            app.mount("#app");
-        }
-    })
-    .catch((err) => {
-        console.error("Keycloak init failed", err);
-    });
+// Try to restore session
+initKeycloak().then(() => {
+    app.mount("#app");
+});

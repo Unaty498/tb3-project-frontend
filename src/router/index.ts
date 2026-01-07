@@ -8,10 +8,16 @@ import DoorDetailView from "../views/DoorDetailView.vue";
 import AccessRulesView from "../views/AccessRulesView.vue";
 import AccessLogsView from "../views/AccessLogsView.vue";
 import NotFoundView from "../views/NotFoundView.vue";
+import LoginView from "../views/LoginView.vue";
+import { getToken } from "../services/keycloak";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        {
+            path: "/login",
+            component: LoginView,
+        },
         {
             path: "/",
             redirect: "/admin/users",
@@ -19,6 +25,7 @@ const router = createRouter({
         {
             path: "/admin",
             component: AdminDashboard,
+            meta: { requiresAuth: true },
             children: [
                 {
                     path: "users",
@@ -56,6 +63,18 @@ const router = createRouter({
             component: NotFoundView,
         },
     ],
+});
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+        if (!getToken()) {
+            next({ path: '/login' });
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 export default router;
